@@ -1,4 +1,4 @@
-ml
+Machine Learning
 ==
 
-A collection of machine learning algorithms from Andrew Ng's Coursera course
+A collection of machine learning algorithms from the coursera machine learning course, implemented in Python.
