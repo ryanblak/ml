@@ -31,6 +31,7 @@ class LogisticRegression:
 		
 		self.initial_theta = self.theta = np.zeros((self.n,1))
 	
+	
 	def sigmoid(self, z):
 		"""
 		Given an input of theta*x, the sigmoid function returns the probability 
@@ -41,11 +42,13 @@ class LogisticRegression:
 		es = ones * e
 		return ones/(ones+np.power(es, -z))
 
+
 	def cost(self, theta=None, x=None, y=None, reg=False):
 		"""
 		Return a single variable indicating how far from optimal our current 
 		values of theta are.
 		"""
+		
 		#because of the way fmin returns a [n,] matrix, in cases where fmin 
 		#provides the theta, we need to ensure that theta is a true [n,1] matrix
 		if theta is None:
@@ -78,6 +81,7 @@ class LogisticRegression:
 		
 		return j
 	
+	
 	def grad(self, theta=None, x=None, y=None, reg=False):
 		"""
 		Grad computes the partial derivative of the cost function. We use this to 
@@ -109,6 +113,7 @@ class LogisticRegression:
 		
 		return grad
 	
+	
 	def map_features(self, degree):
 		"""
 		For datasets that require a complex non-linear solution, map_features can
@@ -127,6 +132,7 @@ class LogisticRegression:
 				x = np.hstack([features,(np.power(x1, (i-j)) * np.power(x2, j))])
 		
 		return x
+	
 	
 	def train(self, reg=False, map_degree=None):
 		"""
@@ -148,6 +154,7 @@ class LogisticRegression:
 		
 		return self.theta
 	
+	
 	def predict(self, variables):
 		"""
 		Given a complete set (or sets) of x inputs, predict returns the likelyhood that the 
@@ -165,6 +172,7 @@ class LogisticRegression:
 		p = self.sigmoid(variables*theta)
 		
 		return p
+
 
 data = np.genfromtxt('ex2data1.txt', delimiter = ',')
 lr = LogisticRegression(data)
