@@ -120,17 +120,18 @@ class LogisticRegression:
 		be used to map features to higher order polynomials.
 		"""
 		
-		x1 = np.matrix(self.data[:,1])
+		x1 = np.matrix(self.data[:,0])
 		x1 = x1.T
-		x2 = np.matrix(self.data[:,2])
+		x2 = np.matrix(self.data[:,1])
 		x2 = x2.T
 		
-		features = self.x[:,1]
+		x = np.ones((self.x.shape[0],1))
 		
+		#multiply all the unique combinations x1**(0:degree) and x2**(0:degree)
 		for i in range(1,degree+1):
 			for j in range(i+1):
-				x = np.hstack([features,(np.power(x1, (i-j)) * np.power(x2, j))])
-		
+				x = np.hstack([x,(np.multiply(np.power(x1, (i-j)),\
+					np.power(x2, j)))])
 		return x
 	
 	
@@ -157,9 +158,10 @@ class LogisticRegression:
 	
 	def predict(self, variables):
 		"""
-		Given a complete set (or sets) of x inputs, predict returns the likelyhood that the 
-		corresponding y value(s) equal 1. Therefore, rounding the output of 
-		predict, will give a prediction of which class the supplied variables belong to.
+		Given a complete set (or sets) of x inputs, predict returns the likelyhood 
+		that the corresponding y value(s) equal 1. Therefore, rounding the output 
+		of predict, will give a prediction of which class the supplied variables 
+		belong to.
 		"""
 		
 		theta = self.theta
