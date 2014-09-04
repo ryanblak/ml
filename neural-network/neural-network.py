@@ -5,7 +5,7 @@ from math import log
 from scipy.optimize import minimize
 
 class NeuralNetwork:
-	def __init__(self, data):
+	def __init__(self, data, hidden_layer):
 		"""
 		Data passed gets split into x and y. A column of ones is added to 
 		act as the bias variable. Measurements are taken for future calculations.
@@ -33,8 +33,8 @@ class NeuralNetwork:
 		
 		#use hard coded layers for this project
 		self.input_layer_size = x.shape[1]
-		self.hidden_layer_size = 25
-		self.output_layer_size = 10
+		self.hidden_layer_size = hidden_layer
+		self.output_layer_size = np.amax(y)+1
 		
 		#initialise theta with random weights to ensure that forward propagation 
 		#functions correctly 
@@ -68,7 +68,7 @@ class NeuralNetwork:
 		m = self.m
 		
 		#convert the y column into a logical matrix
-		vector_y = np.matrix(np.eye(10)[y.astype(int),:])
+		vector_y = np.matrix(np.eye(self.output_layer_size)[y.astype(int),:])
 		
 		#reshape and split nn_params from a one dimensional array of all theta 
 		#values, into the matrix form of theta1 and theta2
@@ -214,7 +214,7 @@ data_y[data_y > 9] = 0
 
 data = np.hstack([data_x,data_y])
 data = data.astype(int)
-nn = NeuralNetwork(data)
+nn = NeuralNetwork(data, 25)
 
 nn.train()
 #evaluate predictions based on how well they perform on the training set, though
