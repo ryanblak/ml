@@ -6,10 +6,10 @@ from PIL import Image
 class KMeans:
 	def __init__(self, data):
 		"""
-		Ensure that data is a numpy matrix and take measures of the data.
+		Ensure that data is a numpy array and take measures of the data.
 		"""
 		
-		self.data = np.matrix(data)
+		self.data = np.array(data)
 		self.m = data.shape[0]
 		self.n = data.shape[1]
 	
@@ -30,12 +30,21 @@ class KMeans:
 		for each of the data points.
 		"""
 		
-		index = np.zeros((self.m,1))
+		#reshape and duplicate data across the 3rd dimension		
+		cube_data = np.reshape(self.data, (1, self.m, self.n))
+		cube_data = np.tile(cube_data, (centroids.shape[0], 1, 1))
 		
-		for i in range(self.m):
-			distancesq = np.power((np.tile(self.data[i,:],(centroids.shape[0], 1))\
-				- centroids),2)
-			index[i] = np.argmin(distancesq.sum(axis=1))
+		#reshape across the 3rd dimension and duplicate centroids across the 1st 
+		#dimension
+		cube_centroids = np.reshape(centroids, (centroids.shape[0], 1, self.n))
+		cube_centroids = np.tile(cube_centroids, (1, self.m, 1))
+		
+		# measure the x and y squared distances and sum to compute the euclidian 
+		#distance and return the index id of the closest centroid.
+		distancesq = np.power(cube_data - cube_centroids, 2)
+		index = np.argmin(distancesq.sum(axis=2), axis=0)
+		
+		index = np.reshape(index, (self.m, 1))
 		
 		return index.astype(int)
 	
@@ -91,5 +100,5 @@ c_data = centroids[index,:]
 c_data = np.squeeze(c_data)
 c_data = np.reshape(c_data, (height, width, 3))
 c_img = Image.fromarray(np.uint8(c_data))
-c_img.show
+c_img.show()
 
