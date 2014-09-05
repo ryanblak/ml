@@ -55,14 +55,19 @@ class KMeans:
 		of their group.
 		"""
 		
-		centroids = np.zeros((np.amax(index)+1,self.n))
+		m_index = np.matrix(index)
+		#construct a logical matrix from numerical index list
+		bin_index = np.matrix(np.eye(np.amax(index)+1)[index,:]).T
 		
-		for i in range(np.amax(index)+1):
-			
-			centroids[i,:] = (1/np.sum(index == i))\
-				*np.sum(self.data[np.where(index == i)[0]], axis=0)
+		#get a sum of all the points x and y values
+		cluster_sum = bin_index * self.data
+		#get a count of the number of clusters per matrix
+		cluster_count = np.sum(bin_index, axis=1)
 		
-		return centroids
+		#compute the mean position of each cluster
+		centroids = np.divide(cluster_sum, cluster_count)
+		
+		return np.array(centroids)
 	
 	
 	def train(self, num_centroids):
